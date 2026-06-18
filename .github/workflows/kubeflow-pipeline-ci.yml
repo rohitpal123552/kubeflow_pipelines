@@ -52,7 +52,7 @@ jobs:
 
       - name: Compile Kubeflow Pipeline
         run: |
-          python ml_pipeline.py
+          python icecream_pipeline/ml_pipeline.py
 
       - name: Verify Pipeline YAML Generated
         run: |
