@@ -43,7 +43,8 @@ jobs:
             "urllib3<2.0" \
             "requests-toolbelt<1.0.0" \
             google-auth==1.35.0 \
-            protobuf==3.20.3
+            protobuf==3.20.3 \
+            pandas
 
       - name: Verify Python Environment
         run: |
