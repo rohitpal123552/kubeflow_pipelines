@@ -44,7 +44,9 @@ jobs:
             "requests-toolbelt<1.0.0" \
             google-auth==1.35.0 \
             protobuf==3.20.3 \
-            pandas
+            pandas \
+            scikit-learn \
+            joblib
 
       - name: Verify Python Environment
         run: |
