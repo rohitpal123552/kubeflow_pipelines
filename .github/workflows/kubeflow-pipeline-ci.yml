@@ -82,6 +82,12 @@ jobs:
           echo $PWD
           docker images
 
+      - name: Verify kubectl
+        run: |
+          kubectl version --client
+          which kubectl
+          kubectl get pods -A
+
 
 
 
