@@ -91,17 +91,17 @@ jobs:
         run: |
           set -e
       
-          export KUBECONFIG=/etc/kubernetes/admin.conf
+          # export KUBECONFIG=/etc/kubernetes/admin.conf
       
           echo "⏳ Waiting for control-plane pods..."
       
-          kubectl wait --for=condition=Ready pod \
+          sudo kubectl wait --for=condition=Ready pod \
             -n kube-system \
             --all \
             --timeout=180s
       
           echo "✅ Control plane is Ready"
-          kubectl get pods -A
+          sudo kubectl get pods -A
 
       # - name: Wait for all pods to be Running
       #   run: |
