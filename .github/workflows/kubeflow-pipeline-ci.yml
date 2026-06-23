@@ -74,10 +74,12 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -f icecream_pipeline/Dockerfile -t sklearn:v1 .
+          cd icecream_pipeline
+          docker build -t sklearn:v1 .
 
       - name: Verify Docker Image 
         run: | 
+          echo $PWD
           docker images
 
 
