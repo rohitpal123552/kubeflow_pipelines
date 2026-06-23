@@ -87,42 +87,58 @@ jobs:
           sudo chmod +x setup_k8s.sh && sudo ./setup_k8s.sh
           sudo kubectl get pods -A
 
-      - name: Wait for all pods to be Running
+      - name: Wait for kube-system pods to be Ready
         run: |
           set -e
       
-          # export KUBECONFIG=/etc/kubernetes/admin.conf
+          export KUBECONFIG=/etc/kubernetes/admin.conf
       
-          echo "⏳ Waiting for all pods in all namespaces to be Running..."
+          echo "⏳ Waiting for control-plane pods..."
       
-          TIMEOUT=120
-          INTERVAL=10
-          ELAPSED=0
+          kubectl wait --for=condition=Ready pod \
+            -n kube-system \
+            --all \
+            --timeout=180s
       
-          while true; do
+          echo "✅ Control plane is Ready"
+          kubectl get pods -A
+
+      # - name: Wait for all pods to be Running
+      #   run: |
+      #     set -e
       
-            NOT_READY=$(sudo kubectl get pods -A --no-headers | \
-              grep -vE "Running|Completed" || true)
+      #     # export KUBECONFIG=/etc/kubernetes/admin.conf
       
-            if [ -z "$NOT_READY" ]; then
-              echo "✅ All pods are Running or Completed!"
-              sudo kubectl get pods -A
-              break
-            fi
+      #     echo "⏳ Waiting for all pods in all namespaces to be Running..."
       
-            echo "⏳ Some pods are not ready yet:"
-            echo "$NOT_READY"
+      #     TIMEOUT=120
+      #     INTERVAL=10
+      #     ELAPSED=0
       
-            if [ $ELAPSED -ge $TIMEOUT ]; then
-              echo "❌ Timeout reached. Pods not healthy."
-              sudo kubectl get pods -A
-              exit 1
-            fi
+      #     while true; do
       
-            sleep $INTERVAL
-            ELAPSED=$((ELAPSED + INTERVAL))
+      #       NOT_READY=$(sudo kubectl get pods -A --no-headers | \
+      #         grep -vE "Running|Completed" || true)
       
-          done
+      #       if [ -z "$NOT_READY" ]; then
+      #         echo "✅ All pods are Running or Completed!"
+      #         sudo kubectl get pods -A
+      #         break
+      #       fi
+      
+      #       echo "⏳ Some pods are not ready yet:"
+      #       echo "$NOT_READY"
+      
+      #       if [ $ELAPSED -ge $TIMEOUT ]; then
+      #         echo "❌ Timeout reached. Pods not healthy."
+      #         sudo kubectl get pods -A
+      #         exit 1
+      #       fi
+      
+      #       sleep $INTERVAL
+      #       ELAPSED=$((ELAPSED + INTERVAL))
+      
+      #     done
       
 
 
