@@ -87,6 +87,43 @@ jobs:
           sudo chmod +x setup_k8s.sh && sudo ./setup_k8s.sh
           sudo kubectl get pods -A
 
+      - name: Wait for all pods to be Running
+        run: |
+          set -e
+      
+          # export KUBECONFIG=/etc/kubernetes/admin.conf
+      
+          echo "⏳ Waiting for all pods in all namespaces to be Running..."
+      
+          TIMEOUT=120
+          INTERVAL=10
+          ELAPSED=0
+      
+          while true; do
+      
+            NOT_READY=$(kubectl get pods -A --no-headers | \
+              grep -vE "Running|Completed" || true)
+      
+            if [ -z "$NOT_READY" ]; then
+              echo "✅ All pods are Running or Completed!"
+              kubectl get pods -A
+              break
+            fi
+      
+            echo "⏳ Some pods are not ready yet:"
+            echo "$NOT_READY"
+      
+            if [ $ELAPSED -ge $TIMEOUT ]; then
+              echo "❌ Timeout reached. Pods not healthy."
+              kubectl get pods -A
+              exit 1
+            fi
+      
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+      
+          done
+      
 
 
 
