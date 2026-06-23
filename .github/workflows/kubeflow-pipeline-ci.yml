@@ -84,7 +84,7 @@ jobs:
 
       - name: Verify kubectl
         run: |
-          sudo chmod +x setup_k8s.sh && ./setup_k8s.sh
+          sudo chmod +x setup_k8s.sh && sudo ./setup_k8s.sh
           kubectl version --client
           which kubectl
           kubectl get pods -A
