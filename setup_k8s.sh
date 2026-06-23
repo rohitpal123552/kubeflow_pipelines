@@ -50,7 +50,7 @@ gpg --dearmor --batch --yes \
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
 apt-get update
 apt-cache madison kubeadm
-apt-get install -y kubelet=${K8S_VERSION}-1.1 kubeadm=${K8S_VERSION}-1.1 kubectl=${K8S_VERSION}-1.1
+apt-get install -y --allow-downgrades kubelet=${K8S_VERSION}-1.1 kubeadm=${K8S_VERSION}-1.1 kubectl=${K8S_VERSION}-1.1
 apt-mark hold kubelet kubeadm kubectl
 
 echo "🎛️ [6/7] Initializing Kubernetes control plane..."
