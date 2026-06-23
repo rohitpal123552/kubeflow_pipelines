@@ -101,12 +101,12 @@ jobs:
       
           while true; do
       
-            NOT_READY=$(kubectl get pods -A --no-headers | \
+            NOT_READY=$(sudo kubectl get pods -A --no-headers | \
               grep -vE "Running|Completed" || true)
       
             if [ -z "$NOT_READY" ]; then
               echo "✅ All pods are Running or Completed!"
-              kubectl get pods -A
+              sudo kubectl get pods -A
               break
             fi
       
@@ -115,7 +115,7 @@ jobs:
       
             if [ $ELAPSED -ge $TIMEOUT ]; then
               echo "❌ Timeout reached. Pods not healthy."
-              kubectl get pods -A
+              sudo kubectl get pods -A
               exit 1
             fi
       
