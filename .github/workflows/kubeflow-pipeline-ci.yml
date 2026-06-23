@@ -66,7 +66,23 @@ jobs:
         with:
           name: ice-cream-pipeline
           path: ice_cream_pipeline.yaml
+          
+      - name: Verify Docker Installation 
+        run: | 
+          docker --version 
+          docker info
 
-      # - name: Build Docker Image
-      #   run: |
-      #     docker build -t icecream-pipeline:test .
+      - name: Build Docker Image
+        run: |
+          docker build -f icecream_pipeline/Dockerfile -t sklearn:v1 .
+
+      - name: Verify Docker Image 
+        run: | 
+          docker images
+
+
+
+
+
+
+      
